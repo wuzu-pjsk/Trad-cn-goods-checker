@@ -1,7 +1,7 @@
-        async function forceRefreshData() {
+async function forceRefreshData() {
             if(!currentUser) return;
             if(currentUser.isDebug) { location.reload(); return; }
-            showLoading('正在从云端拉取最新数据...');
+            showLoading('正在從雲端拉取最新資料...');
             try {
                 const { data, error } = await db.from('leader_data').select('*').eq('user_id', currentUser.id).single();
                 if(error) throw error;
@@ -14,7 +14,7 @@
                     if(activeTabBtn) { switchTab(activeTabBtn.id.replace('tab-', '')); }
                     updateSyncStatus('saved');
                 }
-            } catch(e) { console.error(e); showToast('刷新拉取失败，请检查网络！', 'error'); }
+            } catch(e) { console.error(e); showToast('重新整理拉取失敗，請檢查網路！', 'error'); }
             finally { hideLoading(); }
         }
 
