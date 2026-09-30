@@ -1,7 +1,7 @@
         let shipExportTreeData = {};
         
         window.openShipExportModal = function() {
-            if(window.currentShipSelectedIds.size === 0) { showToast('请先勾选需要导出的谷子哦！', 'warning'); return; }
+            if(window.currentShipSelectedIds.size === 0) { showToast('請先勾選需要匯出的谷子哦！', 'warning'); return; }
             
             shipExportTreeData = {};
             window.currentShipSelectedIds.forEach(id => {
@@ -23,7 +23,7 @@
                             <input type="checkbox" class="w-4 h-4 text-blue-600 export-batch-cb" value="${batch}">
                             <span class="font-bold text-blue-800">${escapeHtml(batch)} <span class="text-xs font-normal text-blue-600 ml-1">(共${count}件)</span></span>
                         </label>
-                        <button onclick="document.getElementById('${safeBatchId}').classList.toggle('hidden')" class="text-xs text-blue-600 bg-white border border-blue-200 px-2 py-1 rounded">展开明细</button>
+                        <button onclick="document.getElementById('${safeBatchId}').classList.toggle('hidden')" class="text-xs text-blue-600 bg-white border border-blue-200 px-2 py-1 rounded">展開明細</button>
                     </div>
                     <div id="${safeBatchId}" class="p-2 bg-white space-y-2 hidden">
                 `;
@@ -90,16 +90,16 @@
                 }
             });
             
-            if(exportFinalList.length === 0) { showToast('请至少勾选一项要导出的内容！', 'warning'); return; }
+            if(exportFinalList.length === 0) { showToast('請至少勾選一項要匯出的內容！', 'warning'); return; }
             
             let sampleItem = currentShipData.items.find(i => window.currentShipSelectedIds.has(i.id));
-            let locationName = sampleItem ? (sampleItem.location || '默认仓库') : '默认仓库';
+            let locationName = sampleItem ? (sampleItem.location || '預設倉庫') : '預設倉庫';
             
             previewHtml += `
-                <div class="text-center font-bold text-lg mb-2 text-gray-800 border-b pb-2">排发清单</div>
+                <div class="text-center font-bold text-lg mb-2 text-gray-800 border-b pb-2">排發清單</div>
                 <div class="text-sm text-gray-600 mb-4 px-2">
                     <p>cn: <strong class="text-blue-600">${escapeHtml(currentShipRawCn)}</strong></p>
-                    <p>囤货地: <strong class="text-green-600">${escapeHtml(locationName)}</strong></p>
+                    <p>囤貨地: <strong class="text-green-600">${escapeHtml(locationName)}</strong></p>
                 </div>
                 <div id="exportDragContainer" class="space-y-1">
             `;
@@ -129,7 +129,7 @@
             document.getElementById('shipExportNextBtn').classList.add('hidden');
         };
 
-        // --- 拖拽逻辑 ---
+        // --- 拖拽邏輯 ---
         let exportDraggedElement = null;
         
         window.exportDragStart = function(e) {
@@ -241,9 +241,9 @@
 
         window.shipExportToText = function() {
             let sampleItem = currentShipData.items.find(i => window.currentShipSelectedIds.has(i.id));
-            let locationName = sampleItem ? (sampleItem.location || '默认仓库') : '默认仓库';
+            let locationName = sampleItem ? (sampleItem.location || '預設倉庫') : '預設倉庫';
             
-            let text = `cn: ${currentShipRawCn}\n囤货地: ${locationName}\n`;
+            let text = `cn: ${currentShipRawCn}\n囤貨地: ${locationName}\n`;
             
             document.querySelectorAll('#exportDragContainer > div').forEach(el => {
                 let lineText = el.querySelector('.flex-1').innerText;
@@ -257,7 +257,7 @@
             document.execCommand('copy');
             document.body.removeChild(tempInput);
             
-            showToast("纯文本已复制到剪贴板！", 'success');
+            showToast("純文字已複製到剪貼簿！", 'success');
         };
 
         window.shipExportToImage = function() {
@@ -270,14 +270,14 @@
 
             html2canvas(element, { backgroundColor: '#ffffff', scale: 2 }).then(canvas => {
                 const link = document.createElement('a'); 
-                link.download = `排发清单_${currentShipRawCn}_${new Date().getTime()}.png`; 
+                link.download = `排發清單_${currentShipRawCn}_${new Date().getTime()}.png`; 
                 link.href = canvas.toDataURL('image/png'); 
                 link.click();
                 
                 element.querySelectorAll('.cursor-grab').forEach(el => el.classList.remove('hidden'));
                 btn.innerHTML = originalText;
             }).catch(err => { 
-                showToast("截图失败", 'error'); 
+                showToast("截圖失敗", 'error'); 
                 element.querySelectorAll('.cursor-grab').forEach(el => el.classList.remove('hidden'));
                 btn.innerHTML = originalText; 
             });
@@ -286,18 +286,17 @@
             let batch = document.getElementById('shipAdminBatchSelect').value;
             let displaySpan = document.getElementById('currentBatchLocation');
             if(!batch) { 
-                displaySpan.innerText = '当前: 无'; 
+                displaySpan.innerText = '當前: 無'; 
                 displaySpan.className = "text-sm font-bold text-gray-500 bg-gray-100 px-3 py-1.5 rounded border border-gray-300 shadow-sm whitespace-nowrap";
                 return; 
             }
             let sampleItem = groupData.find(i => i.batch === batch);
             let loc = sampleItem && sampleItem.location ? sampleItem.location : '未分配';
             
-            displaySpan.innerText = `当前囤货地: ${loc}`;
+            displaySpan.innerText = `當前囤貨地: ${loc}`;
             if(loc === '未分配') {
                 displaySpan.className = "text-sm font-bold text-red-500 bg-red-50 px-3 py-1.5 rounded border border-red-200 shadow-sm whitespace-nowrap";
             } else {
                 displaySpan.className = "text-sm font-bold text-green-700 bg-green-100 px-3 py-1.5 rounded border border-green-300 shadow-sm whitespace-nowrap";
             }
         };
-
