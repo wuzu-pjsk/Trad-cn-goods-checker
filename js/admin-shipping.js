@@ -1,4 +1,4 @@
-        window.renderShippingAdmin = function(pageIndex = 0) {
+window.renderShippingAdmin = function(pageIndex = 0) {
             const batchSelect = document.getElementById('shipAdminBatchSelect');
             const datalist = document.getElementById('locationOptions');
             const batches = [...new Set(groupData.map(i => i.batch))].filter(b => b);
@@ -10,7 +10,7 @@
 
             let reqs = JSON.parse(imageUrlData['__SHIPPING_REQS__'] || '[]'); 
             const list = document.getElementById('shippingAdminList'); list.innerHTML = '';
-            if(reqs.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm">暂无排发申请</p>'; return; }
+            if(reqs.length === 0) { list.innerHTML = '<p class="text-gray-400 text-sm">暫無排發申請</p>'; return; }
             
             let now = Date.now();
             let needSave = false;
@@ -30,21 +30,21 @@
                 let itemsHtml = ''; let extraHtml = '';
                 req.items.forEach((itemId, idx) => {
                     let g = groupData.find(i=>i.id===itemId);
-                    let tag = g ? `<span class="inline-block bg-white border border-gray-200 px-2 py-1 rounded text-xs mr-2 mb-2 shadow-sm">${g.batch}-${g.category}-${g.character} <strong class="text-blue-500">x${g.count}</strong></span>` : `<span class="inline-block bg-red-50 text-xs text-red-400 border border-red-100 px-2 py-1 rounded mr-2 mb-2">已删商品</span>`;
+                    let tag = g ? `<span class="inline-block bg-white border border-gray-200 px-2 py-1 rounded text-xs mr-2 mb-2 shadow-sm">${g.batch}-${g.category}-${g.character} <strong class="text-blue-500">x${g.count}</strong></span>` : `<span class="inline-block bg-red-50 text-xs text-red-400 border border-red-100 px-2 py-1 rounded mr-2 mb-2">已刪商品</span>`;
                     if (idx < 6) itemsHtml += tag; else extraHtml += tag;
                 });
                 
                 let toggleBtn = '';
                 if (extraHtml !== '') {
                     itemsHtml += `<div id="extra_items_${req.id}" class="hidden mt-1 pt-2 border-t border-dashed border-green-200">${extraHtml}</div>`;
-                    toggleBtn = `<button onclick="document.getElementById('extra_items_${req.id}').classList.toggle('hidden')" class="block text-xs text-green-600 bg-green-100 px-2 py-1 rounded hover:bg-green-200 w-full text-center mt-1 font-bold">🔽 展开/收起剩余 ${req.items.length - 6} 项</button>`;
+                    toggleBtn = `<button onclick="document.getElementById('extra_items_${req.id}').classList.toggle('hidden')" class="block text-xs text-green-600 bg-green-100 px-2 py-1 rounded hover:bg-green-200 w-full text-center mt-1 font-bold">🔽 展開/收起剩餘 ${req.items.length - 6} 項</button>`;
                 }
 
                 let proofArea = `
                     <div class="mt-3 p-2 bg-white rounded border border-gray-200 text-xs">
                         <div class="flex justify-between items-center mb-1">
-                            <strong class="text-gray-600">📸 排发平铺图 (传给团员看/7天后自动销毁):</strong>
-                            ${req.proofImg ? `<button onclick="updateShipAdminReq('${req.id}', 'proofImg', '')" class="text-red-500 hover:underline">删除图片</button>` : ''}
+                            <strong class="text-gray-600">📸 排發平鋪圖 (傳給團員看/7天後自動銷毀):</strong>
+                            ${req.proofImg ? `<button onclick="updateShipAdminReq('${req.id}', 'proofImg', '')" class="text-red-500 hover:underline">刪除圖片</button>` : ''}
                         </div>
                         ${req.proofImg ? 
                             `<img src="${req.proofImg}" class="w-24 h-24 object-cover rounded border shadow-sm cursor-pointer" onclick="window.open(this.src)">` 
@@ -55,8 +55,8 @@
 
                 let buyerProofArea = req.buyerProofImg ? `
                     <div class="mt-2 mb-2 p-2 bg-blue-50 border border-blue-100 rounded text-xs flex gap-3 items-center">
-                        <img src="${req.buyerProofImg}" class="w-16 h-16 object-cover rounded border border-blue-200 shadow-sm cursor-pointer hover:opacity-80" onclick="window.open(this.src)" title="点击查看大图">
-                        <div class="text-blue-700 font-bold">团员已上传邮费截图 👉</div>
+                        <img src="${req.buyerProofImg}" class="w-16 h-16 object-cover rounded border border-blue-200 shadow-sm cursor-pointer hover:opacity-80" onclick="window.open(this.src)" title="點擊查看大圖">
+                        <div class="text-blue-700 font-bold">團員已上傳郵費截圖 👉</div>
                     </div>
                 ` : '';
 
@@ -65,11 +65,11 @@
                 let feedbackHtml = '';
                 
                 if (fStatus === '已查看，有问题') {
-                    feedbackHtml = `<div class="bg-red-100 border border-red-300 p-2 rounded text-sm mt-2 animate-pulse"><strong class="text-red-700">🚨 团员反馈：有问题！</strong><p class="text-red-600 mt-1">备注：${fRemark}</p></div>`;
+                    feedbackHtml = `<div class="bg-red-100 border border-red-300 p-2 rounded text-sm mt-2 animate-pulse"><strong class="text-red-700">🚨 團員反饋：有問題！</strong><p class="text-red-600 mt-1">備註：${fRemark}</p></div>`;
                 } else if (fStatus === '已查看，无问题') {
-                    feedbackHtml = `<div class="bg-green-50 border border-green-200 p-2 rounded text-xs mt-2"><strong class="text-green-700">✅ 团员反馈：已确认无问题</strong><span class="text-green-600 ml-2">备注：${fRemark}</span></div>`;
+                    feedbackHtml = `<div class="bg-green-50 border border-green-200 p-2 rounded text-xs mt-2"><strong class="text-green-700">✅ 團員反饋：已確認無問題</strong><span class="text-green-600 ml-2">備註：${fRemark}</span></div>`;
                 } else {
-                    feedbackHtml = `<div class="text-xs text-green-600 mt-2">团员尚未反馈平铺图查看情况</div>`;
+                    feedbackHtml = `<div class="text-xs text-green-600 mt-2">團員尚未反饋平鋪圖查看情況</div>`;
                 }
 
                 list.innerHTML += `
@@ -78,23 +78,23 @@
                         <span class="font-bold text-green-800 text-lg">${req.cn} <span class="text-xs font-normal text-green-600 ml-2">${new Date(req.time).toLocaleString()}</span></span>
                         <div class="flex items-center gap-2">
                             <select onchange="updateShipAdminReq('${req.id}', 'status', this.value)" class="border rounded px-2 py-1 text-sm font-bold ${req.status==='已排发'?'text-green-600 border-green-300':req.status==='需补邮'?'text-red-500 border-red-300':'text-yellow-600 border-yellow-300'}">
-                                <option value="处理中" ${req.status==='处理中'?'selected':''}>⏳ 处理中</option>
-                                <option value="需补邮" ${req.status==='需补邮'?'selected':''}>💰 需补邮</option>
-                                <option value="已排发" ${req.status==='已排发'?'selected':''}>✅ 已排发</option>
+                                <option value="处理中" ${req.status==='处理中'?'selected':''}>⏳ 處理中</option>
+                                <option value="需补邮" ${req.status==='需补邮'?'selected':''}>💰 需補郵</option>
+                                <option value="已排发" ${req.status==='已排发'?'selected':''}>✅ 已排發</option>
                             </select>
-                            <button onclick="deleteShipAdminReq('${req.id}')" class="bg-red-100 text-red-500 hover:bg-red-500 hover:text-white border border-red-200 px-2 py-1 rounded text-sm transition">删除</button>
+                            <button onclick="deleteShipAdminReq('${req.id}')" class="bg-red-100 text-red-500 hover:bg-red-500 hover:text-white border border-red-200 px-2 py-1 rounded text-sm transition">刪除</button>
                         </div>
                     </div>
                     <div class="mb-3">${itemsHtml}${toggleBtn}</div>
                     ${buyerProofArea}
                     <div class="text-sm space-y-1 mb-3 text-green-800">
-                        <p><strong>是否已付邮费：</strong><span class="${req.isPaid==='是'?'text-green-600':'text-red-500'} font-bold">${req.isPaid}</span></p>
+                        <p><strong>是否已付郵費：</strong><span class="${req.isPaid==='是'?'text-green-600':'text-red-500'} font-bold">${req.isPaid}</span></p>
                         <p><strong>收件地址：</strong>${req.address}</p>
-                        <p><strong>快递要求：</strong>${req.express || '无'}</p>
+                        <p><strong>快遞要求：</strong>${req.express || '无'}</p>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" placeholder="填写快递单号" value="${req.trackingNo||''}" onchange="updateShipAdminReq('${req.id}', 'trackingNo', this.value)" class="w-full sm:flex-1 border border-green-200 rounded px-2 py-1.5 text-sm">
-                        <input type="text" placeholder="回复团员 (快递要求/补邮金额)" value="${req.remark||''}" onchange="updateShipAdminReq('${req.id}', 'remark', this.value)" class="w-full sm:flex-1 border border-green-200 rounded px-2 py-1.5 text-sm">
+                        <input type="text" placeholder="填寫快遞單號" value="${req.trackingNo||''}" onchange="updateShipAdminReq('${req.id}', 'trackingNo', this.value)" class="w-full sm:flex-1 border border-green-200 rounded px-2 py-1.5 text-sm">
+                        <input type="text" placeholder="回覆團員 (快遞要求/補郵金額)" value="${req.remark||''}" onchange="updateShipAdminReq('${req.id}', 'remark', this.value)" class="w-full sm:flex-1 border border-green-200 rounded px-2 py-1.5 text-sm">
                     </div>
                     ${proofArea}
                     ${feedbackHtml}
@@ -104,18 +104,18 @@
             if (totalPages > 1) {
                 list.innerHTML += `
                     <div class="mt-4 flex justify-between items-center text-sm bg-white p-3 rounded-lg shadow-sm border border-green-200">
-                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'}); renderShippingAdmin(${pageIndex - 1})" class="px-4 py-2 bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100 font-bold transition disabled:opacity-50" ${pageIndex === 0 ? 'disabled' : ''}>上一页</button>
-                        <span class="text-gray-600 font-bold">第 ${pageIndex + 1} / ${totalPages} 页</span>
-                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'}); renderShippingAdmin(${pageIndex + 1})" class="px-4 py-2 bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100 font-bold transition disabled:opacity-50" ${pageIndex === totalPages - 1 ? 'disabled' : ''}>下一页</button>
+                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'}); renderShippingAdmin(${pageIndex - 1})" class="px-4 py-2 bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100 font-bold transition disabled:opacity-50" ${pageIndex === 0 ? 'disabled' : ''}>上一頁</button>
+                        <span class="text-gray-600 font-bold">第 ${pageIndex + 1} / ${totalPages} 頁</span>
+                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'}); renderShippingAdmin(${pageIndex + 1})" class="px-4 py-2 bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100 font-bold transition disabled:opacity-50" ${pageIndex === totalPages - 1 ? 'disabled' : ''}>下一頁</button>
                     </div>
                 `;
             }
         }
 
         window.deleteShipAdminReq = async function(reqId) {
-            if(!confirm('⚠️ 确定要永久删除这条排发申请吗？\n删除后不可恢复！')) return;
+            if(!confirm('⚠️ 確定要永久刪除這條排發申請嗎？\n刪除後不可恢復！')) return;
             
-            showLoading("同步删除中...");
+            showLoading("同步刪除中...");
             try {
                 const { data, error } = await db.from('leader_data').select('image_data').eq('user_id', currentUser.id).single();
                 if(error) throw error;
@@ -124,7 +124,7 @@
                 
                 let existing = reqs.find(r => r.id === reqId);
                 if(!existing) {
-                    hideLoading(); showToast("该申请已被团员撤销！", 'warning');
+                    hideLoading(); showToast("該申請已被團員撤銷！", 'warning');
                 } else {
                     reqs = reqs.filter(r => r.id !== reqId);
                     imgData['__SHIPPING_REQS__'] = JSON.stringify(reqs);
@@ -136,13 +136,13 @@
                 saveDataLocalOnly();
                 renderShippingAdmin();
                 hideLoading();
-            } catch(e) { hideLoading(); showToast("操作失败，请检查网络！", 'error'); }
+            } catch(e) { hideLoading(); showToast("操作失敗，請檢查網絡！", 'error'); }
         }
 
         window.setBatchLocation = function() {
             let batch = document.getElementById('shipAdminBatchSelect').value;
             let location = document.getElementById('shipAdminLocationInput').value.trim();
-            if(!batch || !location) { showToast("请正确选择团期，并填写新囤货地！", 'warning'); return; }
+            if(!batch || !location) { showToast("請正確選擇團期，並填寫新囤貨地！", 'warning'); return; }
             
             let updated = 0;
             groupData.forEach(item => {
@@ -151,7 +151,7 @@
             
             if(updated > 0) {
                 saveData();
-                showToast(`成功将团期 [${batch}] 下的 ${updated} 条数据划入囤货地: [${location}] ！`, 'success');
+                showToast(`成功將團期 [${batch}] 下的 ${updated} 條數據劃入囤貨地: [${location}] ！`, 'success');
                 renderShippingAdmin(); 
             }
         }
@@ -168,7 +168,7 @@
 
                 if(!target) {
                     hideLoading();
-                    showToast("更新失败：该申请刚刚已被团员撤销！", 'warning');
+                    showToast("更新失敗：該申請剛剛已被團員撤銷！", 'warning');
                     imageUrlData['__SHIPPING_REQS__'] = JSON.stringify(reqs);
                     saveDataLocalOnly();
                     renderShippingAdmin();
@@ -204,24 +204,24 @@
                 hideLoading();
             } catch(e) {
                 hideLoading();
-                showToast("操作失败，请检查网络！", 'error');
+                showToast("操作失敗，請檢查網絡！", 'error');
             }
         }            
 
-        // P16: 图床配置独立渲染
+        // P16: 圖床配置獨立渲染
         window.renderImageHostConfig = function() {
             let hostConfig = JSON.parse(imageUrlData['__IMAGE_HOST_CONFIG__'] || '{}');
             let html = `
             <div class="flex flex-col gap-2">
-                <div><label class="text-xs text-indigo-600">图床 API 地址</label><input type="text" id="host_api_url" value="${hostConfig.api || ''}" placeholder="https://your-image-host.example.com/api" class="w-full border border-gray-300 focus:border-indigo-500 rounded px-2 py-1 text-sm"></div>
-                <div><label class="text-xs text-indigo-600">表单字段名 (默认: image)</label><input type="text" id="host_field" value="${hostConfig.field || ''}" placeholder="image" class="w-full border border-gray-300 focus:border-indigo-500 rounded px-2 py-1 text-sm"></div>
-                <div><label class="text-xs text-indigo-600">API Token/密钥 (可选)</label><input type="text" id="host_token" value="${hostConfig.token || ''}" placeholder="留空则不使用认证" class="w-full border border-gray-300 focus:border-indigo-500 rounded px-2 py-1 text-sm"></div>
-                <div><label class="text-xs text-indigo-600">响应中图片URL的JSON路径 (可选，例: data.links.url)</label><input type="text" id="host_resp_path" value="${hostConfig.respPath || ''}" placeholder="留空则自动识别" class="w-full border border-gray-300 focus:border-indigo-500 rounded px-2 py-1 text-sm"></div>
+                <div><label class="text-xs text-indigo-600">圖床 API 地址</label><input type="text" id="host_api_url" value="${hostConfig.api || ''}" placeholder="https://your-image-host.example.com/api" class="w-full border border-gray-300 focus:border-indigo-500 rounded px-2 py-1 text-sm"></div>
+                <div><label class="text-xs text-indigo-600">表單欄位名 (默認: image)</label><input type="text" id="host_field" value="${hostConfig.field || ''}" placeholder="image" class="w-full border border-gray-300 focus:border-indigo-500 rounded px-2 py-1 text-sm"></div>
+                <div><label class="text-xs text-indigo-600">API Token/密鑰 (可選)</label><input type="text" id="host_token" value="${hostConfig.token || ''}" placeholder="留空則不使用認證" class="w-full border border-gray-300 focus:border-indigo-500 rounded px-2 py-1 text-sm"></div>
+                <div><label class="text-xs text-indigo-600">響應中圖片URL的JSON路徑 (可選，例: data.links.url)</label><input type="text" id="host_resp_path" value="${hostConfig.respPath || ''}" placeholder="留空則自動識別" class="w-full border border-gray-300 focus:border-indigo-500 rounded px-2 py-1 text-sm"></div>
             </div>`;
             document.getElementById('cloudImageHostConfig').innerHTML = html;
         };
 
-        // P16: 图床配置独立保存
+        // P16: 圖床配置獨立保存
         window.saveImageHostConfig = async function() {
             let hostApi = document.getElementById('host_api_url').value.trim();
             let hostField = document.getElementById('host_field').value.trim();
@@ -229,14 +229,14 @@
             let hostRespPath = document.getElementById('host_resp_path').value.trim();
             imageUrlData['__IMAGE_HOST_CONFIG__'] = JSON.stringify({ api: hostApi, field: hostField, token: hostToken, respPath: hostRespPath });
             saveImageUrlData();
-            showToast('图床配置保存成功！', 'success');
+            showToast('圖床配置保存成功！', 'success');
         };
 
         window.renderLocationSettings = function() {
             let locs = [...new Set(groupData.map(i => i.location))].filter(l => l);
             let settings = JSON.parse(imageUrlData['__LOCATION_SETTINGS__'] || '{}');
             let html = '';
-            if(locs.length === 0) { html += '<p class="text-sm text-gray-500 text-center mt-4">暂无囤货地数据，请先在排发工作台给谷子设置囤货地。</p>'; }
+            if(locs.length === 0) { html += '<p class="text-sm text-gray-500 text-center mt-4">暫無囤貨地數據，請先在排發工作台給谷子設置囤貨地。</p>'; }
             locs.forEach(loc => {
                 let cost = settings[loc]?.cost || '';
                 let url = settings[loc]?.url || '';
@@ -244,15 +244,15 @@
                 <div class="border border-purple-200 p-3 rounded bg-white shadow-sm">
                     <h4 class="font-bold text-purple-700 mb-2">🏠 ${escapeHtml(loc)}</h4>
                     <div class="flex flex-col gap-2">
-                        <div><label class="text-xs text-gray-500">邮费说明 (例如: 默认10元,偏远15元)</label><input type="text" id="loc_cost_${loc}" value="${cost}" class="w-full border border-gray-300 focus:border-purple-500 rounded px-2 py-1 text-sm"></div>
-                        <div><label class="text-xs text-gray-500">收款码直链 (例如: https://xxx.com/a.jpg)</label><input type="text" id="loc_url_${loc}" value="${url}" class="w-full border border-gray-300 focus:border-purple-500 rounded px-2 py-1 text-sm"></div>
+                        <div><label class="text-xs text-gray-500">郵費說明 (例如: 默認10元,偏遠15元)</label><input type="text" id="loc_cost_${loc}" value="${cost}" class="w-full border border-gray-300 focus:border-purple-500 rounded px-2 py-1 text-sm"></div>
+                        <div><label class="text-xs text-gray-500">收款碼直鏈 (例如: https://xxx.com/a.jpg)</label><input type="text" id="loc_url_${loc}" value="${url}" class="w-full border border-gray-300 focus:border-purple-500 rounded px-2 py-1 text-sm"></div>
                     </div>
                 </div>`;
             });
             document.getElementById('cloudLocationSettings').innerHTML = html;
         };
 
-        // 兼容旧调用: 一次渲染所有云端设置
+        // 兼容舊調用: 一次渲染所有雲端設置
         window.renderCloudSettings = function() {
             renderImageHostConfig();
             renderLocationSettings();
@@ -269,16 +269,16 @@
             });
             imageUrlData['__LOCATION_SETTINGS__'] = JSON.stringify(settings);
             saveImageUrlData();
-            showToast('邮费配置保存成功！', 'success');
+            showToast('郵費配置保存成功！', 'success');
         }
 
-        // P15: 计算图片平均亮度，返回建议遮罩透明度
+        // P15: 計算圖片平均亮度，返回建議遮罩透明度
         window.calcOverlayOpacity = function(imgUrl, callback) {
             const img = new Image();
             img.crossOrigin = 'anonymous';
             img.onload = function() {
                 const c = document.createElement('canvas');
-                const s = 10; // 10x10 采样
+                const s = 10; // 10x10 採樣
                 c.width = s; c.height = s;
                 const ctx = c.getContext('2d');
                 ctx.drawImage(img, 0, 0, s, s);
@@ -286,7 +286,7 @@
                 let sum = 0, count = 0;
                 for (let i = 0; i < data.length; i += 4) { sum += (data[i]*0.299 + data[i+1]*0.587 + data[i+2]*0.114); count++; }
                 const avg = sum / count; // 0-255
-                // 亮图(>128) → 深遮罩 0.5, 暗图(<128) → 浅遮罩 0.25
+                // 亮圖(>128) → 深遮罩 0.5, 暗圖(<128) → 淺遮罩 0.25
                 const opacity = avg > 160 ? 0.55 : avg > 128 ? 0.45 : avg > 80 ? 0.35 : 0.2;
                 callback(opacity);
             };
@@ -303,26 +303,26 @@
             let bgOpacity = config.bgOpacity || 0.4;
             let html = `
             <div class="flex flex-col gap-3">
-                <div><label class="text-xs text-pink-600">背景类型</label>
+                <div><label class="text-xs text-pink-600">背景類型</label>
                     <select id="bgTypeSelect" onchange="document.getElementById('bgColorRow').style.display=this.value==='color'?'block':'none';document.getElementById('bgImageRow').style.display=this.value==='image'?'block':'none';" class="w-full border rounded px-2 py-1.5 text-sm">
-                        <option value="none" ${bgType==='none'?'selected':''}>默认灰色</option>
-                        <option value="color" ${bgType==='color'?'selected':''}>纯色背景</option>
-                        <option value="image" ${bgType==='image'?'selected':''}>图片背景</option>
+                        <option value="none" ${bgType==='none'?'selected':''}>默認灰色</option>
+                        <option value="color" ${bgType==='color'?'selected':''}>純色背景</option>
+                        <option value="image" ${bgType==='image'?'selected':''}>圖片背景</option>
                     </select>
                 </div>
                 <div id="bgColorRow" style="display:${bgType==='color'?'block':'none'}">
-                    <label class="text-xs text-pink-600">背景颜色</label>
+                    <label class="text-xs text-pink-600">背景顏色</label>
                     <div class="flex gap-2 items-center">
                         <input type="color" id="bgColorInput" value="${bgColor}" class="w-10 h-10 border rounded cursor-pointer">
                         <input type="text" id="bgColorText" value="${bgColor}" oninput="document.getElementById('bgColorInput').value=this.value" class="flex-1 border rounded px-2 py-1 text-sm">
                     </div>
                 </div>
                 <div id="bgImageRow" style="display:${bgType==='image'?'block':'none'}">
-                    <label class="text-xs text-pink-600">背景图片（自动添加遮罩）</label>
+                    <label class="text-xs text-pink-600">背景圖片（自動添加遮罩）</label>
                     <div class="flex gap-2 items-center">
-                        <input type="text" id="bgUrlInput" value="${bgUrl}" placeholder="粘贴图床直链..." class="flex-1 border rounded px-2 py-1 text-sm">
+                        <input type="text" id="bgUrlInput" value="${bgUrl}" placeholder="粘貼圖床直鏈..." class="flex-1 border rounded px-2 py-1 text-sm">
                         <input type="file" accept="image/*" onchange="handleBgUpload(this)" class="hidden" id="bgFileInput">
-                        <button onclick="document.getElementById('bgFileInput').click()" class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1.5 rounded hover:bg-indigo-200 font-bold">📤 上传</button>
+                        <button onclick="document.getElementById('bgFileInput').click()" class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1.5 rounded hover:bg-indigo-200 font-bold">📤 上傳</button>
                     </div>
                     <div class="mt-2 flex items-center gap-2">
                         <label class="text-xs text-pink-600">遮罩透明度:</label>
@@ -330,7 +330,7 @@
                         <span id="bgOverlayLabel" class="text-xs text-pink-600 w-8">${Math.round(bgOpacity*100)}%</span>
                     </div>
                     <div id="bgPreviewArea" class="mt-2 ${bgUrl?'':'hidden'}">
-                        <p class="text-xs text-pink-500 mb-1">预览（含遮罩效果）:</p>
+                        <p class="text-xs text-pink-500 mb-1">預覽（含遮罩效果）:</p>
                         <div id="bgPreviewBox" style="width:100%;height:80px;background:${bgColor} url(${bgUrl}) center/cover;position:relative;border-radius:4px;border:1px solid #ddd;">
                             <div style="position:absolute;inset:0;background:rgba(0,0,0,${bgOpacity});border-radius:4px;"></div>
                         </div>
@@ -345,10 +345,10 @@
             });
         };
 
-        // P15: 上传背景图 → 图床 → 自动计算遮罩
+        // P15: 上傳背景圖 → 圖床 → 自動計算遮罩
         window.handleBgUpload = function(inputEl) {
             const file = inputEl.files[0]; if (!file) return;
-            showLoading('上传背景图中...');
+            showLoading('上傳背景圖中...');
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e) {
@@ -371,9 +371,9 @@
                             document.getElementById('bgOverlayLabel').textContent = Math.round(opacity * 100) + '%';
                             updateBgPreview(remoteUrl, opacity);
                         });
-                        showToast('背景图上传成功！', 'success');
+                        showToast('背景圖上傳成功！', 'success');
                     } else {
-                        showToast('背景图上传失败！', 'error');
+                        showToast('背景圖上傳失敗！', 'error');
                     }
                     inputEl.value = '';
                 };
@@ -403,18 +403,18 @@
 
         window.updateBgPreview = updateBgPreview;
 
-        // P12: 功能开关渲染
+        // P12: 功能開關渲染
         window.renderFeatureToggles = function() {
             let config = JSON.parse(imageUrlData['__APP_CONFIG__'] || '{}');
             let features = config.features || {};
-            let piggyOn = features.piggyRank !== false; // 默认 true
+            let piggyOn = features.piggyRank !== false; // 默認 true
             var intlOn = features.intlFreight !== false;
             var html = `
             <div class="space-y-3">
                 <div class="flex items-center justify-between py-2 border-b border-gray-100">
                     <div>
-                        <p class="font-bold text-sm">🐷 ！？猪猪？！</p>
-                        <p class="text-xs text-amber-600">首页"吃谷成就排名"入口</p>
+                        <p class="font-bold text-sm">🐷 ！？豬豬？！</p>
+                        <p class="text-xs text-amber-600">首頁"吃谷成就排名"入口</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="toggle_piggyRank" ${piggyOn ? 'checked' : ''} class="sr-only peer">
@@ -423,8 +423,8 @@
                 </div>
                 <div class="flex items-center justify-between py-2 border-b border-gray-100">
                     <div>
-                        <p class="font-bold text-sm">🌍 国际运费计算 & 排发表</p>
-                        <p class="text-xs text-amber-600">仪表盘"国际运费"入口</p>
+                        <p class="font-bold text-sm">🌍 國際運費計算 & 排發表</p>
+                        <p class="text-xs text-amber-600">儀表盤"國際運費"入口</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="toggle_intlFreight" ${intlOn ? 'checked' : ''} class="sr-only peer">
@@ -435,7 +435,7 @@
             document.getElementById('cloudFeatureToggles').innerHTML = html;
         };
 
-        // P12: 保存功能开关
+        // P12: 保存功能開關
         window.saveFeatureToggles = async function() {
             let config = JSON.parse(imageUrlData['__APP_CONFIG__'] || '{}');
             if (!config.features) config.features = {};
@@ -444,10 +444,10 @@
             imageUrlData['__APP_CONFIG__'] = JSON.stringify(config);
             saveImageUrlData();
             if (typeof applyFeatureToggles === 'function') applyFeatureToggles();
-            showToast('功能开关保存成功！', 'success');
+            showToast('功能開關保存成功！', 'success');
         };
 
-        // P12: 应用功能开关到DOM
+        // P12: 應用功能開關到DOM
         window.applyFeatureToggles = function() {
             var piggyBtn = document.querySelector('#portal-screen button[onclick*="rank-screen"]');
             if (piggyBtn) piggyBtn.style.display = isFeatureEnabled('piggyRank') ? '' : 'none';
@@ -457,10 +457,10 @@
 
         window.openReuseImageModal = function() {
             const currentBatch = document.getElementById('imageBatchSelect').value;
-            if(!currentBatch) { showToast('请先选择当前需要补充柄图的团期！', 'warning'); return; }
+            if(!currentBatch) { showToast('請先選擇當前需要補充柄圖的團期！', 'warning'); return; }
             
             const batches = [...new Set(groupData.map(i => i.batch))].filter(b => b && b !== currentBatch);
-            if(batches.length === 0) { showToast('没有其他历史团期可供复用！', 'warning'); return; }
+            if(batches.length === 0) { showToast('沒有其他歷史團期可供復用！', 'warning'); return; }
             
             const select = document.getElementById('reuseSourceBatch');
             select.innerHTML = batches.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
@@ -493,9 +493,9 @@
             if(count > 0) {
                 saveImageUrlData(); 
                 renderImageManager(); 
-                showToast("成功复用了 " + count + " 张同名款式的柄图！", 'success');
+                showToast("成功復用了 " + count + " 張同名款式的柄圖！", 'success');
             } else {
-                showToast('未找到可以复用的柄图。(可能是该历史团期没有同名角色，或者当前团期已经有图了)', 'warning');
+                showToast('未找到可以復用的柄圖。(可能是該歷史團期沒有同名角色，或者當前團期已經有圖了)', 'warning');
             }
             closeReuseImageModal();
         };
