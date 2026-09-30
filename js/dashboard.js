@@ -1,4 +1,4 @@
-        function switchTab(tabId) {
+function switchTab(tabId) {
             document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
             document.getElementById('page-' + tabId).classList.remove('hidden');
             document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active', 'text-blue-500', 'text-purple-500', 'text-green-600', 'text-yellow-600'); el.classList.add('text-gray-500'); el.style.borderBottom = "none"; el.style.fontWeight = "normal"; });
@@ -19,14 +19,14 @@
             const batchSelect = document.getElementById('imageBatchSelect');
             const batches = [...new Set(groupData.map(i => i.batch))].filter(b => b);
             batchSelect.innerHTML = batches.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
-            if(batches.length > 0) renderImageManager(); else document.getElementById('imageContainer').innerHTML = '<p class="text-center py-8">暂无数据</p>';
+            if(batches.length > 0) renderImageManager(); else document.getElementById('imageContainer').innerHTML = '<p class="text-center py-8">暫無資料</p>';
         }
         window.renderImageManager = function() {
             const batch = document.getElementById('imageBatchSelect').value; const container = document.getElementById('imageContainer');
             container.innerHTML = ''; if(!batch) return;
             let data = groupData.filter(i => i.batch === batch);
             [...new Set(data.map(i => i.category))].filter(c => c).forEach(cat => {
-                let html = `<div class="mb-6"><div class="flex items-center justify-between bg-gray-100 p-2 mb-3 border-l-4 border-blue-500"><h3 class="font-bold text-gray-800">${escapeHtml(cat)}</h3><button onclick="openBatchImageModal('${escapeHtml(batch)}', '${escapeHtml(cat)}')" class="text-xs bg-indigo-100 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-200 font-bold transition shadow-sm">➕ 批量导入链接</button></div><div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-4">`;
+                let html = `<div class="mb-6"><div class="flex items-center justify-between bg-gray-100 p-2 mb-3 border-l-4 border-blue-500"><h3 class="font-bold text-gray-800">${escapeHtml(cat)}</h3><button onclick="openBatchImageModal('${escapeHtml(batch)}', '${escapeHtml(cat)}')" class="text-xs bg-indigo-100 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-200 font-bold transition shadow-sm">➕ 批量匯入連結</button></div><div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-4">`;
                 [...new Set(data.filter(i => i.category === cat).map(i => i.character))].filter(c => c).forEach(char => {
                     let key = `${batch}|${cat}|${char}`; let imgUrl = imageUrlData[key];
                     let imgHtml = imgUrl ? `<img src="${imgUrl}" class="w-full aspect-[4/3] object-cover bg-white rounded shadow-sm border border-gray-200">` : `<div class="w-full aspect-[4/3] bg-gray-50 border border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-400"><span>🔗</span></div>`;
@@ -38,11 +38,11 @@
         window.openImageModal = function(key) { currentEditImageKey = key; document.getElementById('imgUrlInput').value = imageUrlData[key] || ''; document.getElementById('imageUrlModal').classList.remove('hidden'); };
         window.closeImageModal = function() { document.getElementById('imageUrlModal').classList.add('hidden'); };
         window.saveImageUrl = function() { const url = document.getElementById('imgUrlInput').value.trim(); if(url) imageUrlData[currentEditImageKey] = url; else delete imageUrlData[currentEditImageKey]; saveImageUrlData(); closeImageModal(); renderImageManager(); };
-        window.deleteImage = function(key, event) { event.stopPropagation(); showConfirmModal('确定删除这张柄图？').then(function(ok) { if(ok) { var deleted = imageUrlData[key]; delete imageUrlData[key]; saveImageUrlData(); renderImageManager(); showUndoToast('柄图已删除', function() { imageUrlData[key] = deleted; saveImageUrlData(); renderImageManager(); showToast('柄图已恢复', 'success'); }); } }); };
+        window.deleteImage = function(key, event) { event.stopPropagation(); showConfirmModal('確定刪除這張柄圖？').then(function(ok) { if(ok) { var deleted = imageUrlData[key]; delete imageUrlData[key]; saveImageUrlData(); renderImageManager(); showUndoToast('柄圖已刪除', function() { imageUrlData[key] = deleted; saveImageUrlData(); renderImageManager(); showToast('柄圖已恢復', 'success'); }); } }); };
 
         window.openBatchImageModal = function(batch, cat) {
             currentBatchImageContext = { batch, cat };
-            document.getElementById('batchImageTitle').innerText = `批量导入 - ${batch} / ${cat}`;
+            document.getElementById('batchImageTitle').innerText = `批量匯入 - ${batch} / ${cat}`;
             document.getElementById('batchImageText').value = '';
             document.getElementById('batchImageModal').classList.remove('hidden');
         };
@@ -67,7 +67,7 @@
                 }
             });
             saveImageUrlData(); closeBatchImageModal(); renderImageManager();
-            if(updated > 0) showToast(`成功导入 ${updated} 个柄图链接！`, 'success'); else showToast("未能识别到任何链接，请检查格式 (角色名,http链接)。", 'warning');
+            if(updated > 0) showToast(`成功匯入 ${updated} 個柄圖連結！`, 'success'); else showToast("未能辨識到任何連結，請檢查格式 (角色名,http連結)。", 'warning');
         };
 
         document.getElementById('itemForm').addEventListener('submit', function(e) {
@@ -77,11 +77,11 @@
             [batch, category, character].forEach(function(f) { if(!f.value.trim()) { f.classList.add('input-error'); valid = false; } else { f.classList.remove('input-error'); } });
             if(!price.value || parseFloat(price.value) <= 0) { price.classList.add('input-error'); valid = false; } else { price.classList.remove('input-error'); }
             if(!names.value.trim() || names.value.split(/[\r\n]+/).filter(function(n) { return n.trim(); }).length === 0) { names.classList.add('input-error'); valid = false; } else { names.classList.remove('input-error'); }
-            if(!valid) { showToast('请填写所有必填字段！', 'warning'); return; }
+            if(!valid) { showToast('請填寫所有必填欄位！', 'warning'); return; }
             var batchVal = batch.value.trim(), categoryVal = category.value.trim(), characterVal = character.value.trim(), priceVal = parseFloat(price.value), multiplier = parseInt(document.getElementById('inMultiplier').value) || 1, nameList = names.value.split(/[\r\n]+/).map(function(n) { return n.trim(); }).filter(function(n) { return n !== ''; });
             var countMap = {}; nameList.forEach(function(n) { countMap[n] = (countMap[n] || 0) + multiplier; });
-            for (var cn in countMap) groupData.push({ id: generateSafeId(), batch: batchVal, category: categoryVal, character: characterVal, price: priceVal, count: countMap[cn], cn: cn, status: '未到货', paidStatus: '未交' });
-            saveData(); character.value = ''; names.value = ''; updateSidebar(); renderManageTable(); showToast("录入成功！", 'success');
+            for (var cn in countMap) groupData.push({ id: generateSafeId(), batch: batchVal, category: categoryVal, character: characterVal, price: priceVal, count: countMap[cn], cn: cn, status: '未到貨', paidStatus: '未交' });
+            saveData(); character.value = ''; names.value = ''; updateSidebar(); renderManageTable(); showToast("錄入成功！", 'success');
         });
 
         window.handleDragStart = function(e, id) { draggedItemRowId = id; e.dataTransfer.effectAllowed = 'move'; e.target.classList.add('dragging'); };
@@ -110,7 +110,7 @@
             const batch = document.getElementById('scheduleBatch').value;
             const categorySelect = document.getElementById('scheduleCategory');
             const categories = [...new Set(groupData.filter(i => i.batch === batch).map(i => i.category))].filter(c => c);
-            categorySelect.innerHTML = '<option value="all">全部种类</option>' + categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+            categorySelect.innerHTML = '<option value="all">全部種類</option>' + categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
             renderSchedule();
         }
         window.updateCategoryStep = function(category, value) { window.scheduleSteps[category] = parseInt(value); renderSchedule(); }
@@ -152,11 +152,11 @@
                             <h3 class="text-lg font-bold text-gray-800">${escapeHtml(batch)} - ${escapeHtml(cat)} 排表</h3>
                             <div class="flex flex-wrap items-center gap-4">
                                 <div class="flex items-center gap-2">
-                                    <label class="text-xs text-gray-500">每排款式数(列数):</label>
+                                    <label class="text-xs text-gray-500">每排款式數(欄數):</label>
                                     <input type="number" min="1" value="${maxCols}" onchange="updateCategoryCols('${escapeHtml(cat)}', this.value)" class="w-16 border border-gray-300 rounded px-2 py-1 text-sm bg-yellow-50 text-yellow-700 focus:outline-none focus:border-yellow-400">
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <label class="text-xs text-gray-500">每行数量:</label>
+                                    <label class="text-xs text-gray-500">每行數量:</label>
                                     <input type="number" min="1" value="${step}" onchange="updateCategoryStep('${escapeHtml(cat)}', this.value)" class="w-16 border border-gray-300 rounded px-2 py-1 text-sm bg-blue-50 text-blue-700 focus:outline-none focus:border-blue-400">
                                 </div>
                             </div>
@@ -170,7 +170,7 @@
                             <table class="min-w-full text-sm text-center border-collapse border border-gray-300">
                                 <thead>
                                     <tr class="bg-gray-100">
-                                        <th class="border border-gray-300 py-2 w-12 text-gray-600 font-normal">序号</th>
+                                        <th class="border border-gray-300 py-2 w-12 text-gray-600 font-normal">序號</th>
                                         ${chunk.map(c => `<th class="border border-gray-300 py-2 min-w-[80px]">${escapeHtml(c)}<br><span class="text-xs text-blue-600 font-normal">¥${charMap[c].price}</span></th>`).join('')}
                                     </tr>
                                 </thead>
@@ -194,11 +194,11 @@
 
         function updateFinanceSelect() {
             const select = document.getElementById('financeBatchSelect');
-            select.innerHTML = '<option value="all">全部团期汇总</option>';
+            select.innerHTML = '<option value="all">全部團期彙總</option>';
             [...new Set(groupData.map(i => i.batch))].forEach(b => select.innerHTML += `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`);
         }
         
-        // 🌟 升级：智能多栏分流肾表渲染逻辑
+        // 🌟 升級：智慧多欄分流腎表渲染邏輯
         window.renderFinanceTable = function() {
             const filter = document.getElementById('financeBatchSelect').value;
             const tbody = document.getElementById('financeTableBody');
@@ -225,15 +225,15 @@
                 
                 let detailKeys = Object.keys(summary[cn].details);
                 
-                // 🌟 智能分栏：根据吃谷款式种类多少决定展示几列，并动态设定单元格最小宽度
+                // 🌟 智慧分欄：根據吃谷款式種類多少決定展示幾欄，並動態設定單元格最小寬度
                 let colsClass = "grid-cols-1";
-                let minWidthClass = "min-w-[280px]"; // 谷子少时保持紧凑
+                let minWidthClass = "min-w-[280px]"; // 谷子少時保持緊湊
                 if (detailKeys.length > 3 && detailKeys.length <= 6) {
                     colsClass = "grid-cols-2";
-                    minWidthClass = "min-w-[480px]"; // 开启双列
+                    minWidthClass = "min-w-[480px]"; // 開啟雙欄
                 } else if (detailKeys.length > 6) {
                     colsClass = "grid-cols-3";
-                    minWidthClass = "min-w-[680px]"; // 开启三列
+                    minWidthClass = "min-w-[680px]"; // 開啟三欄
                 }
                 
                 let detailsHtml = `<div class="grid ${colsClass} gap-2 w-full">`;
@@ -259,14 +259,14 @@
             });
             
             if (sortedCNs.length > 0) {
-                tfoot.innerHTML = `<tr><td colspan="2" class="py-3 px-3 text-right border-r border-gray-200">当前表格总计：</td><td class="py-3 px-3 border-r border-gray-200">¥${grandTotal.toFixed(2)}</td><td class="py-3 px-3 text-green-600 border-r border-gray-200">¥${grandPaid.toFixed(2)}</td><td class="py-3 px-3 ${grandUnpaid > 0 ? 'text-red-500' : 'text-gray-500'}">¥${grandUnpaid.toFixed(2)}</td></tr>`;
+                tfoot.innerHTML = `<tr><td colspan="2" class="py-3 px-3 text-right border-r border-gray-200">目前表格總計：</td><td class="py-3 px-3 border-r border-gray-200">¥${grandTotal.toFixed(2)}</td><td class="py-3 px-3 text-green-600 border-r border-gray-200">¥${grandPaid.toFixed(2)}</td><td class="py-3 px-3 ${grandUnpaid > 0 ? 'text-red-500' : 'text-gray-500'}">¥${grandUnpaid.toFixed(2)}</td></tr>`;
             }
         };
 
         window.exportToImage = function(containerId, fileNamePrefix) {
             const element = document.getElementById(containerId);
             const btn = event.currentTarget; const originalText = btn.innerHTML;
-            btn.innerHTML = '⏳ 生成中 (请勿滑动屏幕)...';
+            btn.innerHTML = '⏳ 生成中（請勿滑動螢幕）...';
             const scrollContainers = element.querySelectorAll('.overflow-x-auto, .export-scroll-target');
             
             scrollContainers.forEach(el => el.classList.add('export-expand')); 
@@ -280,7 +280,7 @@
                     element.classList.remove('export-expand', 'export-fix'); 
                     btn.innerHTML = originalText;
                 }).catch(err => { 
-                    showToast("截图失败", 'error'); 
+                    showToast("截圖失敗", 'error'); 
                     scrollContainers.forEach(el => el.classList.remove('export-expand')); 
                     element.classList.remove('export-expand', 'export-fix'); 
                     btn.innerHTML = originalText; 
@@ -292,9 +292,9 @@
             if(e.target.classList.contains('btn-delete')) {
                 let id = e.target.getAttribute('data-id');
                 var itemToDel = groupData.find(function(i) { return i.id === id; });
-                showConfirmModal('删除后不可恢复并会同步云端，确定要删除？').then(function(ok) {
+                showConfirmModal('刪除後無法復原並會同步雲端，確定要刪除？').then(function(ok) {
                     if(ok) { groupData = groupData.filter(function(i) { return i.id !== id; }); saveData(); updateSidebar(); renderManageTable();
-                    if(itemToDel) showUndoToast('已删除「' + itemToDel.character + '」', function() { groupData.push(itemToDel); saveData(); updateSidebar(); renderManageTable(); showToast('已恢复', 'success'); }); }
+                    if(itemToDel) showUndoToast('已刪除「' + itemToDel.character + '」', function() { groupData.push(itemToDel); saveData(); updateSidebar(); renderManageTable(); showToast('已復原', 'success'); }); }
                 });
             } else if (e.target.classList.contains('btn-edit')) {
                 window.openEditModal(e.target.getAttribute('data-id'));
@@ -302,15 +302,15 @@
         });
 
         window.downloadTemplate = function() {
-            let csv = "\uFEFF唯一ID(导入新数据请留空),团期,分类,角色,单价,数量,买家,到货状态(未到货/已到货/已排发),交肾状态(未交/已交),柄图链接\n,示例团期,立牌,阿米娅,35.5,2,小明,未到货,已交,https://s2.loli.net/xxxx.jpg\n";
-            const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })); a.download = "排单录入模板.csv"; a.click();
+            let csv = "\uFEFF唯一ID(匯入新資料請留空),團期,分類,角色,單價,數量,買家,到貨狀態(未到貨/已到貨/已排發),交腎狀態(未交/已交),柄圖連結\n,範例團期,立牌,阿米婭,35.5,2,小明,未到貨,已交,https://s2.loli.net/xxxx.jpg\n";
+            const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })); a.download = "排單錄入範本.csv"; a.click();
         };
         
         window.exportCSV = function() {
-            if(groupData.length===0) { showToast('无数据', 'info'); return; }
-            let csv = "\uFEFF唯一ID,团期,分类,角色,单价,数量,买家,到货状态,交肾状态,柄图链接\n";
+            if(groupData.length===0) { showToast('無資料', 'info'); return; }
+            let csv = "\uFEFF唯一ID,團期,分類,角色,單價,數量,買家,到貨狀態,交腎狀態,柄圖連結\n";
             groupData.forEach(i => { let key = `${i.batch}|${i.category}|${i.character}`; let imgUrl = imageUrlData[key] || ''; csv += `${i.id},${i.batch},${i.category},${i.character},${i.price},${i.count},${i.cn},${i.status},${i.paidStatus||'未交'},${imgUrl}\n`; });
-            const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })); a.download = "排单云端数据备份.csv"; a.click();
+            const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })); a.download = "排單雲端資料備份.csv"; a.click();
         };
 
         function parseCSVText(text) {
@@ -347,14 +347,14 @@
                     const firstSheetName = workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[firstSheetName];
                     let arrayRows = XLSX.utils.sheet_to_json(worksheet, {header: 1, raw: false, defval: ""});
-                    // Ensure all cells are strings for consistent handling downstream
+                    // 確保所有儲存格皆為字串，以便後續處理一致
                     arrayRows = arrayRows.map(row => row.map(cell => cell == null ? '' : String(cell)));
                     processImportedData(arrayRows);
-                    event.target.value = ''; // 清空选择
+                    event.target.value = ''; // 清空選擇
                 };
                 reader.readAsArrayBuffer(file);
             } else {
-                // 处理 CSV
+                // 處理 CSV
                 const encoding = document.getElementById('importEncoding').value;
                 const reader = new FileReader();
                 let actualEncoding = encoding === 'auto' ? 'UTF-8' : encoding;
@@ -371,18 +371,18 @@
         };
 
         function processImportedData(rows) {
-            if(rows.length < 2) { showToast("文件内容为空或格式错误！", 'warning'); return; }
+            if(rows.length < 2) { showToast("檔案內容為空或格式錯誤！", 'warning'); return; }
             
             let isMatrix = false;
             if(rows.length >= 4) {
                 let r2 = rows[2] || []; let r3 = rows[3] || [];
-                if((r2[0] && r2[0].includes("ID")) || (r3[1] && (r3[1].includes("单价") || r3[1].trim() === "单价"))) {
+                if((r2[0] && r2[0].includes("ID")) || (r3[1] && (r3[1].includes("單價") || r3[1].trim() === "單價"))) {
                     isMatrix = true;
                 }
             }
             if(!isMatrix) {
                 let header = rows[0].join(",");
-                if(!header.includes("团期") || !header.includes("买家")) isMatrix = true;
+                if(!header.includes("團期") || !header.includes("買家")) isMatrix = true;
             }
 
             let newRecords = [];
@@ -390,8 +390,8 @@
 
             if (isMatrix) {
                 try {
-                    // 智能提取团期名
-                    let rawBatchStr = rows[0].find(c => c && String(c).trim() !== '') || '未知团期';
+                    // 智慧提取團期名
+                    let rawBatchStr = rows[0].find(c => c && String(c).trim() !== '') || '未知團期';
                     let batch = rawBatchStr;
                     let batchMatch = rawBatchStr.match(/【(.*?)】/);
                     if (batchMatch && batchMatch[1]) {
@@ -405,12 +405,12 @@
                     let priceRow = rows[3] || [];
 
                     let colCategories = [];
-                    let currentCat = '默认分类';
+                    let currentCat = '預設分類';
                     let maxCols = Math.max(headerRow.length, categoryRow.length);
                     
                     for (let c = 1; c < maxCols; c++) {
                         let catCell = categoryRow[c] ? String(categoryRow[c]).trim() : '';
-                        if (catCell && catCell !== '分类' && catCell !== '') {
+                        if (catCell && catCell !== '分類' && catCell !== '') {
                             currentCat = catCell;
                         }
                         colCategories[c] = currentCat; 
@@ -418,19 +418,19 @@
 
                     for(let col = 1; col < headerRow.length; col++) {
                         let character = headerRow[col] ? String(headerRow[col]).trim() : '';
-                        if(!character || character === '种类') continue;
+                        if(!character || character === '種類') continue;
 
                         let priceStr = priceRow[col] ? String(priceRow[col]).trim() : '0';
                         let price = parseFloat(priceStr) || 0;
-                        let category = colCategories[col] || '默认分类';
+                        let category = colCategories[col] || '預設分類';
 
                         for(let r = 4; r < rows.length; r++) {
                             let row = rows[r];
                             if(!row || row.length < 2) continue;
                             
-                            // 自动过滤垃圾行（如包含“总金额”、“昵称/总数”的行）
+                            // 自動過濾垃圾行（如包含「總金額」、「暱稱/總數」的行）
                             let rowStr = row.join("").toLowerCase();
-                            if(rowStr.includes("总金额") || rowStr.includes("昵称/总数")) {
+                            if(rowStr.includes("總金額") || rowStr.includes("暱稱/總數")) {
                                 continue;
                             }
 
@@ -451,28 +451,28 @@
                                 price: price,
                                 count: count,
                                 cn: cn,
-                                status: '未到货',
+                                status: '未到貨',
                                 paidStatus: '未交'
                             });
                         }
                     }
                 } catch(err) {
                     console.error(err);
-                    { showToast("矩阵格式解析失败，请检查表格是否符合要求。", 'error'); return; }
+                    { showToast("矩陣格式解析失敗，請檢查表格是否符合要求。", 'error'); return; }
                 }
             } else {
                 let headers = rows[0].map(h => String(h).trim());
                 let colMap = {
                     id: headers.findIndex(h => h.includes("ID")),
-                    batch: headers.findIndex(h => h.includes("团期")),
-                    category: headers.findIndex(h => h.includes("分类") || h.includes("种类")),
+                    batch: headers.findIndex(h => h.includes("團期")),
+                    category: headers.findIndex(h => h.includes("分類") || h.includes("種類")),
                     character: headers.findIndex(h => h.includes("角色") || h.includes("款式")),
-                    price: headers.findIndex(h => h.includes("单价")),
-                    count: headers.findIndex(h => h.includes("数量")),
-                    cn: headers.findIndex(h => h.includes("买家") || h.includes("CN")),
-                    status: headers.findIndex(h => h.includes("到货")),
-                    paidStatus: headers.findIndex(h => h.includes("交肾") || h.includes("付款")),
-                    imgUrl: headers.findIndex(h => h.includes("柄图") || h.includes("链接") || h.includes("图片"))
+                    price: headers.findIndex(h => h.includes("單價")),
+                    count: headers.findIndex(h => h.includes("數量")),
+                    cn: headers.findIndex(h => h.includes("買家") || h.includes("CN")),
+                    status: headers.findIndex(h => h.includes("到貨")),
+                    paidStatus: headers.findIndex(h => h.includes("交腎") || h.includes("付款")),
+                    imgUrl: headers.findIndex(h => h.includes("柄圖") || h.includes("連結") || h.includes("圖片"))
                 };
 
                 for(let i = 1; i < rows.length; i++) {
@@ -494,7 +494,7 @@
                         price: colMap.price >=0 ? parseFloat(row[colMap.price]) || 0 : 0,
                         count: count,
                         cn: cn,
-                        status: colMap.status >=0 ? String(row[colMap.status]).trim() : '未到货',
+                        status: colMap.status >=0 ? String(row[colMap.status]).trim() : '未到貨',
                         paidStatus: colMap.paidStatus >=0 ? String(row[colMap.paidStatus]).trim() : '未交'
                     });
 
@@ -515,8 +515,8 @@
                 if (hasNewImage) saveImageUrlData();
                 updateSidebar();
                 renderManageTable();
-                showToast(`成功智能识别并导入 ${newRecords.length} 条排单数据！已同步至云端。`, 'success');
+                showToast(`成功智慧辨識並匯入 ${newRecords.length} 筆排單資料！已同步至雲端。`, 'success');
             } else {
-                showToast("未能识别到有效数据，请检查表格内容。", 'warning');
+                showToast("未能辨識到有效資料，請檢查表格內容。", 'warning');
             }
         }
