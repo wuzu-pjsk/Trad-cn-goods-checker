@@ -6,12 +6,12 @@
             window.isSwipeMode = !window.isSwipeMode;
             let btn = document.getElementById('swipeSelectBtn');
             if(window.isSwipeMode) {
-                btn.innerHTML = '🛑 关闭多选';
+                btn.innerHTML = '🛑 關閉多選';
                 btn.classList.replace('bg-gray-100', 'bg-blue-500');
                 btn.classList.replace('text-gray-600', 'text-white');
                 btn.classList.add('animate-pulse');
             } else {
-                btn.innerHTML = '👆 开启多选';
+                btn.innerHTML = '👆 開啟多選';
                 btn.classList.replace('bg-blue-500', 'bg-gray-100');
                 btn.classList.replace('text-white', 'text-gray-600');
                 btn.classList.remove('animate-pulse');
