@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="referrer" content="no-referrer">
-    <title>排单管理系统 (design by 秋洛)</title>
+    <title>排單管理系統 (design by 秋洛)</title>
     <script>tailwind.config = { darkMode: 'class' }</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0/dist/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- 引入读取 Excel 文件的神器 -->
+    <!-- 引入讀取 Excel 文件的神器 -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
     <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
     
     <script>
-        // 👇 替换为你的 Supabase 项目 URL 和 anon key，详见 README 部署步骤
+        // 👇 替換為你的 Supabase 項目 URL 和 anon key，詳見 README 部署步驟
         const SUPABASE_URL = 'https://gzatuosftqkpirnjqypi.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6YXR1b3NmdHFrcGlybmpxeXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MDc5OTMsImV4cCI6MjEwNjI4Mzk5M30.CTuMMRfiZi2airfhRMc49L_GjIacHHG4Hhepwd-snCA';
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
