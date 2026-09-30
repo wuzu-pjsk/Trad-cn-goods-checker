@@ -16,8 +16,8 @@
     
     <script>
         // 👇 替換為你的 Supabase 專案 URL 和 anon key，詳見 README 部署步驟
-        const SUPABASE_URL = 'https://gzatuosftqkpirnjqypi.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6YXR1b3NmdHFrcGlybmpxeXBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MDc5OTMsImV4cCI6MjEwNjI4Mzk5M30.CTuMMRfiZi2airfhRMc49L_GjIacHHG4Hhepwd-snCA';
+        const SUPABASE_URL = 'https://your-project.supabase.co';
+        const SUPABASE_KEY = 'your-anon-key';
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     </script>
 
@@ -129,7 +129,7 @@
             <div class="space-y-4 mb-6">
                 <input type="text" id="payKeyInput" placeholder="團長查詢金鑰" class="w-full border border-gray-300 rounded px-3 py-2 focus:border-yellow-500">
                 <input type="text" id="payCnInput" placeholder="你的嚴格完整 CN" class="w-full border border-gray-300 rounded px-3 py-2 focus:border-yellow-500">
-                <button onclick="doPaymentSearch()" class="w-full bg-yellow-500 text-white font-bold py-2 rounded shadow hover:bg-yellow-600 transition mt-2">查詢待交腎穀子</button>
+                <button onclick="doPaymentSearch()" class="w-full bg-yellow-500 text-white font-bold py-2 rounded shadow hover:bg-yellow-600 transition mt-2">查詢待交腎谷子</button>
             </div>
             <div id="payHistoryArea" class="hidden mt-6 mb-6">
                 <h3 class="font-bold text-gray-700 border-l-4 border-yellow-500 pl-2 mb-3">🕒 我的交腎稽核記錄</h3>
@@ -176,7 +176,7 @@
             <div class="space-y-4 mb-6">
                 <input type="text" id="shipKeyInput" placeholder="團長查詢金鑰" class="w-full border border-gray-300 rounded px-3 py-2 focus:border-green-500 focus:outline-none">
                 <input type="text" id="shipCnInput" placeholder="你的嚴格完整 CN" class="w-full border border-gray-300 rounded px-3 py-2 focus:border-green-500 focus:outline-none">
-                <button onclick="doShippingSearch()" class="w-full bg-green-500 text-white font-bold py-2 rounded shadow hover:bg-green-600 transition mt-2">查詢可排發穀子</button>
+                <button onclick="doShippingSearch()" class="w-full bg-green-500 text-white font-bold py-2 rounded shadow hover:bg-green-600 transition mt-2">查詢可排發谷子</button>
             </div>
             
             <div id="shipHistoryArea" class="hidden mt-6 mb-6">
@@ -193,7 +193,7 @@
                     <button id="swipeSelectBtn" onclick="toggleSwipeMode()" class="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full border border-gray-300 shadow-sm transition">👆 開啟多選</button>
                 </div>
                 <div id="shipItemsList" class="space-y-3 mb-4 select-none"></div>
-                <button onclick="openShipForm()" class="w-full bg-indigo-500 text-white font-bold py-3 rounded shadow-md hover:bg-indigo-600 transition">🚀 將已勾選的穀子去排發</button>
+                <button onclick="openShipForm()" class="w-full bg-indigo-500 text-white font-bold py-3 rounded shadow-md hover:bg-indigo-600 transition">🚀 將已勾選的谷子去排發</button>
             </div>
         </div>
     </div>
@@ -245,7 +245,7 @@
             </div>
             <!-- Step 1: 勾選 -->
             <div id="shipExportStep1" class="p-4 overflow-y-auto flex-1 text-sm">
-                <p class="text-gray-500 text-xs mb-3">請勾選需要匯出的內容。勾選“團期”則只匯出團期名；展開並勾選“明細”則匯出具體穀子。</p>
+                <p class="text-gray-500 text-xs mb-3">請勾選需要匯出的內容。勾選“團期”則只匯出團期名；展開並勾選“明細”則匯出具體谷子。</p>
                 <div id="shipExportTree" class="space-y-3"></div>
             </div>
             <!-- Step 2: 預覽與排序 -->
@@ -481,7 +481,7 @@
                     <!-- 🏠 修改：囤貨地設定工具 -->
                     <div class="bg-green-50 border border-green-200 p-4 rounded mb-6 shadow-sm">
                         <h3 class="font-bold text-green-800 mb-2">🏠 設定或調整團期【囤貨地】</h3>
-                        <p class="text-xs text-green-700 mb-3">將不同團期分配到對應的倉庫/發貨地。只有同一囤貨地的穀子，團員才能合併打包排發。</p>
+                        <p class="text-xs text-green-700 mb-3">將不同團期分配到對應的倉庫/發貨地。只有同一囤貨地的谷子，團員才能合併打包排發。</p>
                         
                         <div class="flex flex-col sm:flex-row gap-2 items-center mb-2">
                             <select id="shipAdminBatchSelect" onchange="updateCurrentLocationDisplay()" class="border border-green-300 bg-white rounded px-2 py-1.5 text-sm sm:w-1/3 flex-1"></select>
