@@ -1,18 +1,18 @@
-// image-crop.js — 图片裁切弹窗（基于 Cropper.js）
-// 依赖：Cropper.js CDN（cropper.min.css + cropper.min.js）
+// image-crop.js — 圖片裁切彈窗（基於 Cropper.js）
+// 依賴：Cropper.js CDN（cropper.min.css + cropper.min.js）
 
 /**
- * 打开裁切弹窗
- * @param {string} base64 - 图片 base64 data URL
- * @param {object|function} opts - 选项 { aspectRatio?: number, title?: string } 或直接传 callback
- * @param {function} callback - 裁切完成后回调 (croppedBase64|null)
+ * 開啟裁切彈窗
+ * @param {string} base64 - 圖片 base64 data URL
+ * @param {object|function} opts - 選項 { aspectRatio?: number, title?: string } 或直接傳 callback
+ * @param {function} callback - 裁切完成後回呼 (croppedBase64|null)
  */
 function openImageCrop(base64, opts, callback) {
     if (typeof opts === 'function') { callback = opts; opts = {}; }
     opts = opts || {};
     callback = callback || function() {};
 
-    var title = opts.title || '裁切图片';
+    var title = opts.title || '裁切圖片';
     var aspectRatio = opts.aspectRatio || NaN;
 
     closeImageCrop();
@@ -27,8 +27,8 @@ function openImageCrop(base64, opts, callback) {
         '<img id="imageCropImg" src="' + base64 + '" alt="crop" style="max-width:100%;max-height:50vh">' +
         '</div>' +
         '<div class="flex justify-between items-center px-4 py-3 border-t border-gray-200 gap-3">' +
-        '<button id="imageCropSkipBtn" class="px-4 py-2 text-sm text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50">跳过裁切</button>' +
-        '<button id="imageCropConfirmBtn" class="px-5 py-2 text-sm bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 shadow">确认裁切</button>' +
+        '<button id="imageCropSkipBtn" class="px-4 py-2 text-sm text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50">跳過裁切</button>' +
+        '<button id="imageCropConfirmBtn" class="px-5 py-2 text-sm bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 shadow">確認裁切</button>' +
         '</div></div></div>';
 
     var overlay = document.createElement('div');
