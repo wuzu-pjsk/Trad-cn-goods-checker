@@ -1,6 +1,6 @@
-        window.uploadItemImage = function(inputEl) {
+window.uploadItemImage = function(inputEl) {
             const file = inputEl.files[0]; if (!file) return;
-            showLoading("正在压缩并上传到图床...");
+            showLoading("正在壓縮並上傳到圖床...");
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e) {
@@ -21,9 +21,9 @@
 
                     if (remoteUrl) {
                         document.getElementById('imgUrlInput').value = remoteUrl;
-                        showToast("图床上传成功！点击下方的【保存】即可生效。", 'success');
+                        showToast("圖床上傳成功！點擊下方的【儲存】即可生效。", 'success');
                     } else {
-                        showToast("图片上传失败，请重试！", 'error');
+                        showToast("圖片上傳失敗，請重試！", 'error');
                     }
                     inputEl.value = '';
                 }
@@ -65,14 +65,14 @@
                 const text = await response.text();
                 let result;
                 try { result = JSON.parse(text); } catch(e) {
-                    console.error("图床返回非JSON:", text.substring(0, 200));
-                    showToast('图床返回格式异常，请检查API地址是否正确', 'error');
+                    console.error("圖床返回非JSON:", text.substring(0, 200));
+                    showToast('圖床返回格式異常，請檢查API地址是否正確', 'error');
                     return null;
                 }
 
                 let finalUrl = null;
 
-                // 1. 用户自定义响应路径 (如 data.links.url → result.data.links.url)
+                // 1. 使用者自訂響應路徑 (如 data.links.url → result.data.links.url)
                 if (config.respPath && !finalUrl) {
                     try {
                         finalUrl = config.respPath.split('.').reduce((o, k) => o[k], result);
@@ -87,11 +87,11 @@
                 if (!finalUrl && result && result.data && result.data.links && result.data.links.url) {
                     finalUrl = result.data.links.url;
                 }
-                // 4. 顶层 url 字段
+                // 4. 頂層 url 欄位
                 if (!finalUrl && result && result.url) {
                     finalUrl = result.url;
                 }
-                // 5. 兜底: 遍历找第一个包含 http 的 url 值
+                // 5. 備用方案: 遍歷尋找第一個包含 http 的 url 值
                 if (!finalUrl) {
                     const findUrl = (obj, depth) => {
                         if (depth > 3) return null;
@@ -107,18 +107,18 @@
                 if (finalUrl) {
                     return finalUrl;
                 } else {
-                    console.error("图床返回:", result);
-                    const errMsg = result && result.message ? result.message : '响应中未找到图片URL';
-                    showToast('图床上传失败: ' + errMsg, 'error');
+                    console.error("圖床返回:", result);
+                    const errMsg = result && result.message ? result.message : '響應中未找到圖片URL';
+                    showToast('圖床上傳失敗: ' + errMsg, 'error');
                     return null;
                 }
             } catch (err) {
-                console.error("上传图床失败:", err);
+                console.error("上傳圖床失敗:", err);
                 const msg = err.message || '';
                 if (msg.includes('Failed to fetch') || msg.includes('NetworkError')) {
-                    showToast('无法连接图床，请检查网络或API地址', 'error');
+                    showToast('無法連接圖床，請檢查網路或API地址', 'error');
                 } else {
-                    showToast('上传失败: ' + msg, 'error');
+                    showToast('上傳失敗: ' + msg, 'error');
                 }
                 return null;
             }
@@ -127,7 +127,7 @@
 
         window.handleBuyerUpload = function(inputEl, previewId) {
             const file = inputEl.files[0]; if (!file) return;
-            showLoading("正在压缩并上传到图床...");
+            showLoading("正在壓縮並上傳到圖床...");
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e) {
@@ -151,7 +151,7 @@
                         document.getElementById(previewId).classList.remove('hidden');
                         document.getElementById(previewId).querySelector('img').src = remoteUrl;
                     } else {
-                        showToast("图片上传失败，请重试！", 'error');
+                        showToast("圖片上傳失敗，請重試！", 'error');
                         inputEl.value = '';
                     }
                 }
@@ -160,7 +160,7 @@
 
         window.uploadProofImage = function(reqId, inputEl) {
             const file = inputEl.files[0]; if (!file) return;
-            showLoading("压缩上传到图床中...");
+            showLoading("正在壓縮上傳到圖床...");
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e) {
@@ -182,10 +182,9 @@
                         updateShipAdminReq(reqId, 'proofImg', remoteUrl);
                     } else {
                         hideLoading();
-                        showToast("图床上传失败，请重试！", 'error');
+                        showToast("圖床上傳失敗，請重試！", 'error');
                         inputEl.value = '';
                     }
                 }
             }
         }
-        
